@@ -3,10 +3,10 @@
 import { env } from "@/env";
 import stripe from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs/server";
+import type { Stripe } from "stripe";
 
 export async function createCheckoutSession(priceId: string) {
   const user = await currentUser();
-
 
   if (!user) {
     throw new Error("Unauthorized");
@@ -19,12 +19,19 @@ export async function createCheckoutSession(priceId: string) {
   if (stripeCustomerId) {
     try {
       await stripe.customers.retrieve(stripeCustomerId);
-    } catch (error: any) {
-      if (error?.code === "resource_missing") {
-        console.warn(`Invalid Stripe customer ID: ${stripeCustomerId}, falling back to email.`);
+    } catch (error: unknown) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        (error as { code: string }).code === "resource_missing"
+      ) {
+        console.warn(
+          `Invalid Stripe customer ID: ${stripeCustomerId}, falling back to email.`,
+        );
         stripeCustomerId = undefined;
       } else {
-        throw error; 
+        throw error;
       }
     }
   }
