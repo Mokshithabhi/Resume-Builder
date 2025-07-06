@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { createCheckoutSession } from "./actions";
-import { redirect } from "next/dist/server/api-utils";
 
 const premiumFeatures = ["AI tools", "Up to 3 resumes"];
 const premiumPlusFeatures = ["Infinite resumes", "Design customizations"];
@@ -65,7 +64,7 @@ export default function PremiumModal() {
               <Button
                 onClick={() =>
                   handlePremiumClick(
-                    process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY!,
+                    env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY,
                   )
                 }
                 disabled={loading}
@@ -90,7 +89,7 @@ export default function PremiumModal() {
                 variant="premium"
                 onClick={() =>
                   handlePremiumClick(
-                   process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_PLUS_MONTHLY!,
+                   env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_PLUS_MONTHLY,
                   )
                 }
                 disabled={loading}
