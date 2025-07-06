@@ -3,7 +3,6 @@
 import { env } from "@/env";
 import stripe from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs/server";
-import type { Stripe } from "stripe";
 
 export async function createCheckoutSession(priceId: string) {
   const user = await currentUser();
